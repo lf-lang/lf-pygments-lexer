@@ -2,6 +2,8 @@ from pygments.lexer import DelegatingLexer, RegexLexer, bygroups
 from pygments.lexers.c_cpp import CppLexer
 from pygments.token import *
 
+import re
+
 class CustomLexer(DelegatingLexer):
 
     name = 'LF-C++'
@@ -13,9 +15,15 @@ class CustomLexer(DelegatingLexer):
 
 
 class LFLexer(RegexLexer):
+
+    flags = re.MULTILINE | re.DOTALL
+
     tokens = {
         'root': [
             (r'({=)(\s*)(.*?)(\s*)(=})', bygroups(Punctuation, Whitespace, Other, Whitespace, Punctuation)),
+            (r'#.*?$', Comment),
+            (r'\/\/.*?$', Comment),
+            (r'\/\*.*?\*\/', Comment),
             (r'reactor', Keyword)
         ]
     }
