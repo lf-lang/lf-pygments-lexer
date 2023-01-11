@@ -24,6 +24,8 @@ class LFLexer(RegexLexer):
             (r'#.*?$', Comment),
             (r'\/\/.*?$', Comment),
             (r'\/\*.*?\*\/', Comment),
-            (r'reactor', Keyword)
+            (r'(target)(\s*)(.*?)(\s*)$', bygroups(Keyword, Whitespace, Name.Builtin, Whitespace)),
+            (r'main', Keyword),
+            (r'(reactor)(\s*)(\w*)', bygroups(Keyword, Whitespace, Name.Class))
         ]
     }
