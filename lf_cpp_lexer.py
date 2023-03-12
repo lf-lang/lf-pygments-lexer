@@ -20,10 +20,15 @@ class LFLexer(RegexLexer):
 
     tokens = {
         'root': [
+            # target code blocks
             (r'({=)(\s*)(.*?)(\s*)(=})', bygroups(Punctuation, Whitespace, Other, Whitespace, Punctuation)),
+            # comments
             (r'#.*?$', Comment),
             (r'\/\/.*?$', Comment),
             (r'\/\*.*?\*\/', Comment),
+            # optional semicolon
+            (r';', Punctuation),
+            # target declaration
             (r'(target)(\s*)(.*?)(\s*)$', bygroups(Keyword, Whitespace, Name.Builtin, Whitespace)),
             (r'main', Keyword),
             (r'(reactor)(\s*)(\w*)', bygroups(Keyword, Whitespace, Name.Class))
