@@ -50,10 +50,18 @@ class LFLexer(RegexLexer):
             # custom rules
             (r'(target)(\s*)(Cpp)', bygroups(Keyword, Whitespace, Name.Builtin)),
             (r'(reactor)(\s*)(\w*)', bygroups(Keyword, Whitespace, Name.Class)),
+            (r'(input)([.*?])?(\s*)(\w*)', bygroups(Keyword, Other, Whitespace, Name.Variable)),
+            (r'(output)([.*?])?(\s*)(\w*)', bygroups(Keyword, Other, Whitespace, Name.Variable)),
+            (r'(action)(\s*)(\w*)', bygroups(Keyword, Whitespace, Name.Variable)),
+            (r'(state)(\s*)(\w*)', bygroups(Keyword, Whitespace, Name.Variable)),
+            (r'(\w*)(\s*)(=)(\s*)(new)', bygroups(Name.Variable, Whitespace, Operator, Keyword)),
             # keywords
-            (words(('input', 'output', 'state', 'new', 'public', 'private', 'preamble', 'import', 'from', 'reaction', 'main', 'reactor', 'after', 'deadline', 'logical', 'physical', 'action')), Keyword),
+            (words(('input', 'output', 'state', 'new', 'public', 'private', 'preamble', 'import',
+                    'from', 'reaction', 'main', 'reactor', 'after', 'deadline', 'logical',
+                    'physical', 'action'), prefix=r'\b', suffix=r'\b'), Keyword),
             # builtins
-            (words(('startup', 'shutdown')), Name.Builtin),
+            (words(('startup', 'shutdown'), prefix=r'\b', suffix=r'\b'), Name.Builtin),
+            (words(('time',), prefix=r'\b', suffix=r'\b'), Keyword.Type),
             # time value with unit
             (r'(\d+)(\s*)('+'|'.join(time_units)+r')', bygroups(Number.Integer, Whitespace, Name.Builtin)),
             # Operators
