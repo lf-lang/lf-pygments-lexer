@@ -5,8 +5,7 @@ from pygments.token import *
 import re
 
 # Known limitations:
-#  - single colons not preceded or followed by a space are highlighted as
-#    operators in the C++ target
+#  - The comment rules do not support nested comments
 #  - For target properties that have a hyphen in there name, the hyphen is
 #    highlighted like an operator
 
@@ -46,20 +45,18 @@ class LFLexer(RegexLexer):
             (r'\/\*.*?\*\/', Comment),
             # optional semicolon
             (r';', Punctuation),
-            # treat a single colon separately if it is preceded of followed by a whitespace
-            (r'(:)(\s)', bygroups(Punctuation, Whitespace)),
-            (r'(\s)(:)', bygroups(Whitespace, Punctuation)),
-            #(r'(^::^:)', Punctuation),
+            # single colons are punctuation, double colons will be handled by the target lexer
+            (r'(?<!:):(?!:)', Punctuation),
             # custom rules
             (r'(target)(\s*)(Cpp)', bygroups(Keyword, Whitespace, Name.Builtin)),
             (r'(reactor)(\s*)(\w*)', bygroups(Keyword, Whitespace, Name.Class)),
             # keywords
-            (words(('input', 'output', 'state', 'new', 'public', 'private', 'preamble', 'import', 'from', 'reaction', 'main', 'reactor', 'after', 'deadline')), Keyword),
+            (words(('input', 'output', 'state', 'new', 'public', 'private', 'preamble', 'import', 'from', 'reaction', 'main', 'reactor', 'after', 'deadline', 'logical', 'physical', 'action')), Keyword),
             # builtins
             (words(('startup', 'shutdown')), Name.Builtin),
             # time value with unit
             (r'(\d+)(\s*)('+'|'.join(time_units)+r')', bygroups(Number.Integer, Whitespace, Name.Builtin)),
-            # Operators 
+            # Operators
             (r'->', Operator),
             (r'~>', Operator),
             # Everything else
