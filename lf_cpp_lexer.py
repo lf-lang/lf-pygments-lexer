@@ -4,6 +4,11 @@ from pygments.token import *
 
 import re
 
+# Known limitations:
+#  - single colons not preceded or followed by a space are highlighted as
+#    operators in the C++ target
+#  - For target properties that have a hyphen in there name, the hyphen is
+#    highlighted like an operator
 
 time_units = [
     'nsec', 'nsecs', 'ns',
