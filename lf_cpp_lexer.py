@@ -1,5 +1,8 @@
 from pygments.lexer import DelegatingLexer, RegexLexer, bygroups, words, include
-from pygments.lexers.c_cpp import CppLexer
+from pygments.lexers.c_cpp import CLexer, CppLexer
+from pygments.lexers.javascript import TypeScriptLexer
+from pygments.lexers.python import PythonLexer
+from pygments.lexers.rust import RustLexer
 from pygments.token import *
 
 import re
@@ -20,15 +23,50 @@ time_units = [
     'week', 'weeks',
 ]
 
+class LFCLexer(DelegatingLexer):
 
-class CustomLexer(DelegatingLexer):
+    name = 'Lingua Franca with C target'
+    aliases = ['lf-c']
+    filenames = ['*.lf']
 
-    name = 'LF-C++'
+    def __init__(self, **options):
+        super().__init__(CLexer, LFLexer, **options)
+
+class LFCppLexer(DelegatingLexer):
+
+    name = 'Lingua Franca with C++ target'
+    aliases = ['lf-cpp']
     filenames = ['*.lf']
 
     def __init__(self, **options):
         super().__init__(CppLexer, LFLexer, **options)
 
+class LFPythonLexer(DelegatingLexer):
+
+    name = 'Lingua Franca with Python target'
+    aliases = ['lf-python', 'lf-py']
+    filenames = ['*.lf']
+
+    def __init__(self, **options):
+        super().__init__(PythonLexer, LFLexer, **options)
+
+class LFRustLexer(DelegatingLexer):
+
+    name = 'Lingua Franca with Rust target'
+    aliases = ['lf-rust', 'lf-rs']
+    filenames = ['*.lf']
+
+    def __init__(self, **options):
+        super().__init__(RustLexer, LFLexer, **options)
+
+class LFTypeScriptLexer(DelegatingLexer):
+
+    name = 'Lingua Franca with TypeScript target'
+    aliases = ['lf-typescript', 'lf-ts']
+    filenames = ['*.lf']
+
+    def __init__(self, **options):
+        super().__init__(TypeScriptLexer, LFLexer, **options)
 
 
 class LFLexer(RegexLexer):
@@ -48,17 +86,17 @@ class LFLexer(RegexLexer):
             # single colons are punctuation, double colons will be handled by the target lexer
             (r'(?<!:):(?!:)', Punctuation),
             # custom rules
-            (r'(target)(\s*)(Cpp)', bygroups(Keyword, Whitespace, Name.Builtin)),
-            (r'(reactor)(\s*)(\w*)', bygroups(Keyword, Whitespace, Name.Class)),
-            (r'(input)([.*?])?(\s*)(\w*)', bygroups(Keyword, Other, Whitespace, Name.Variable)),
-            (r'(output)([.*?])?(\s*)(\w*)', bygroups(Keyword, Other, Whitespace, Name.Variable)),
-            (r'(action)(\s*)(\w*)', bygroups(Keyword, Whitespace, Name.Variable)),
-            (r'(state)(\s*)(\w*)', bygroups(Keyword, Whitespace, Name.Variable)),
+            (r'(\btarget)(\s*)(C|Cpp|Python|Rust|TypeScript)', bygroups(Keyword, Whitespace, Name.Builtin)),
+            (r'(\breactor)(\s*)(\w*)', bygroups(Keyword, Whitespace, Name.Class)),
+            (r'(\binput)([.*?])?(\s*)(\w*)', bygroups(Keyword, Other, Whitespace, Name.Variable)),
+            (r'(\boutput)([.*?])?(\s*)(\w*)', bygroups(Keyword, Other, Whitespace, Name.Variable)),
+            (r'(\baction)(\s*)(\w*)', bygroups(Keyword, Whitespace, Name.Variable)),
+            (r'(\bstate)(\s*)(\w*)', bygroups(Keyword, Whitespace, Name.Variable)),
             (r'(\w*)(\s*)(=)(\s*)(new)', bygroups(Name.Variable, Whitespace, Operator, Keyword)),
             # keywords
             (words(('input', 'output', 'state', 'new', 'public', 'private', 'preamble', 'import',
                     'from', 'reaction', 'main', 'reactor', 'after', 'deadline', 'logical',
-                    'physical', 'action'), prefix=r'\b', suffix=r'\b'), Keyword),
+                    'physical', 'action', 'federated'), prefix=r'\b', suffix=r'\b'), Keyword),
             # builtins
             (words(('startup', 'shutdown'), prefix=r'\b', suffix=r'\b'), Name.Builtin),
             (words(('time',), prefix=r'\b', suffix=r'\b'), Keyword.Type),
