@@ -1,0 +1,30 @@
+[build-system]
+requires = ["setuptools>65.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "lf_pygments_lexer"
+version = "0.1.0"
+authors = [
+    {name = "Christian Menard", email = "christian.menard@tu-dresden.de"},
+]
+description = "A collection of pygments lexer for the various target dialects of Lingua Franca"
+readme = "README.md"
+requires-python = ">=3.8"
+license = {text = "ISC"}
+dependencies = [
+    "pygments", "pillow",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+
+[tool.black]
+line-length = 100
+
+[project.entry-points."pygments.lexers"]
+lf-c = "lf_pygments_lexer:LFCLexer"
+lf-cpp = "lf_pygments_lexer:LFCppLexer"
+lf-py = "lf_pygments_lexer:LFPythonLexer"
+lf-rust = "lf_pygments_lexer:LFRustLexer"
+lf-ts = "lf_pygments_lexer:LFTypeScriptLexer"

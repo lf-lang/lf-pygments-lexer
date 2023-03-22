@@ -7,6 +7,8 @@ from pygments.token import *
 
 import re
 
+__all__ = ['LFLexer', 'LFCLexer', 'LFCppLexer', 'LFPythonLexer', 'LFRustLexer', 'LFTypeScriptLexer']
+
 # Known limitations:
 #  - The comment rules do not support nested comments
 #  - For target properties that have a hyphen in there name, the hyphen is
