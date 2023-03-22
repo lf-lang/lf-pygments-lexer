@@ -34,7 +34,7 @@ class LFLexer(RegexLexer):
     tokens = {
         'root': [
             # target code blocks
-            (r'({=)(\s*)(.*?)(\s*)(=})', bygroups(Punctuation, Whitespace, Other, Whitespace, Punctuation)),
+            (r'({=)(.*?)(=})', bygroups(Punctuation, Other, Punctuation)),
             # comments
             (r'#.*?$', Comment),
             (r'\/\/.*?$', Comment),
@@ -45,6 +45,8 @@ class LFLexer(RegexLexer):
             (r'(target)(\s*)(.*?)(\s*)$', bygroups(Keyword, Whitespace, Name.Builtin, Whitespace)),
             (r'main', Keyword),
             (r'(reactor)(\s*)(\w*)', bygroups(Keyword, Whitespace, Name.Class)),
+            (r'(input|output)(\s*)', bygroups(Keyword, Whitespace), 'port'),
+            (r'(state)(\s*)', bygroups(Keyword, Whitespace), 'state'),
             # expressions
             include('expression'),
         ],
@@ -65,4 +67,15 @@ class LFLexer(RegexLexer):
             (r"'.'" , String.Char),
             (r"'.*?'", String.Single),
         ],
-    }
+        'port': [
+            (r'(\w+)', Name.Variable),
+            (r'(\s*)(:)(\s*)(time)', bygroups(Whitespace, Punctuation, Whitespace, Keyword.Type), '#pop'),
+            (r'(\s*)(:)(.*?)$', bygroups(Whitespace, Punctuation, Other), '#pop'),
+            (r'\s*$', Whitespace, '#pop')
+        ],
+        'state': [
+            (r'(\w+)', Name.Variable),
+            (r'(\s*)(:)(.*?)$', bygroups(Whitespace, Punctuation, Other), '#pop'),
+            (r'\s*$', Whitespace, '#pop')
+        ],
+}
