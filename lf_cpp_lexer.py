@@ -41,41 +41,23 @@ class LFLexer(RegexLexer):
             (r'\/\*.*?\*\/', Comment),
             # optional semicolon
             (r';', Punctuation),
-            # target declaration
-            (r'(target)(\s*)(.*?)(\s*)$', bygroups(Keyword, Whitespace, Name.Builtin, Whitespace)),
-            (r'main', Keyword),
+            # treat a single colon separately if it is preceded of followed by a whitespace
+            (r'(:)(\s)', bygroups(Punctuation, Whitespace)),
+            (r'(\s)(:)', bygroups(Whitespace, Punctuation)),
+            #(r'(^::^:)', Punctuation),
+            # custom rules
+            (r'(target)(\s*)(Cpp)', bygroups(Keyword, Whitespace, Name.Builtin)),
             (r'(reactor)(\s*)(\w*)', bygroups(Keyword, Whitespace, Name.Class)),
-            (r'(input|output)(\s*)', bygroups(Keyword, Whitespace), 'port'),
-            (r'(state)(\s*)', bygroups(Keyword, Whitespace), 'state'),
-            # expressions
-            include('expression'),
-        ],
-        'expression': [
+            # keywords
+            (words(('input', 'output', 'state', 'new', 'public', 'private', 'preamble', 'import', 'from', 'reaction', 'main', 'reactor', 'after', 'deadline')), Keyword),
+            # builtins
+            (words(('startup', 'shutdown')), Name.Builtin),
             # time value with unit
             (r'(\d+)(\s*)('+'|'.join(time_units)+r')', bygroups(Number.Integer, Whitespace, Name.Builtin)),
-            # other expressions
-            include('numbers'),
-            include('strings'),
-        ],
-        'numbers': [
-            (r'(\d+\.\d*|\d*\.\d+)([eE][+-]?[0-9]+)?j?', Number.Float),
-            (r'\d+[eE][+-]?[0-9]+j?', Number.Float),
-            (r'\d+?', Number.Integer),
-        ],
-        'strings': [
-            (r'".*?"', String.Double),
-            (r"'.'" , String.Char),
-            (r"'.*?'", String.Single),
-        ],
-        'port': [
-            (r'(\w+)', Name.Variable),
-            (r'(\s*)(:)(\s*)(time)', bygroups(Whitespace, Punctuation, Whitespace, Keyword.Type), '#pop'),
-            (r'(\s*)(:)(.*?)$', bygroups(Whitespace, Punctuation, Other), '#pop'),
-            (r'\s*$', Whitespace, '#pop')
-        ],
-        'state': [
-            (r'(\w+)', Name.Variable),
-            (r'(\s*)(:)(.*?)$', bygroups(Whitespace, Punctuation, Other), '#pop'),
-            (r'\s*$', Whitespace, '#pop')
+            # Operators 
+            (r'->', Operator),
+            (r'~>', Operator),
+            # Everything else
+            (r'.', Other)
         ],
 }
