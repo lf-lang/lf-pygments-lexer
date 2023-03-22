@@ -44,6 +44,27 @@ time_units = [
     "weeks",
 ]
 
+keywords = (
+    "input",
+    "output",
+    "state",
+    "new",
+    "public",
+    "private",
+    "preamble",
+    "import",
+    "from",
+    "reaction",
+    "main",
+    "reactor",
+    "after",
+    "deadline",
+    "logical",
+    "physical",
+    "action",
+    "federated",
+)
+
 
 class LFCLexer(DelegatingLexer):
     name = "Lingua Franca with C target"
@@ -117,33 +138,7 @@ class LFLexer(RegexLexer):
             (r"(\bstate)(\s*)(\w*)", bygroups(Keyword, Whitespace, Name.Variable)),
             (r"(\w*)(\s*)(=)(\s*)(new)", bygroups(Name.Variable, Whitespace, Operator, Keyword)),
             # keywords
-            (
-                words(
-                    (
-                        "input",
-                        "output",
-                        "state",
-                        "new",
-                        "public",
-                        "private",
-                        "preamble",
-                        "import",
-                        "from",
-                        "reaction",
-                        "main",
-                        "reactor",
-                        "after",
-                        "deadline",
-                        "logical",
-                        "physical",
-                        "action",
-                        "federated",
-                    ),
-                    prefix=r"\b",
-                    suffix=r"\b",
-                ),
-                Keyword,
-            ),
+            (words(keywords, prefix=r"\b", suffix=r"\b"), Keyword),
             # builtins
             (words(("startup", "shutdown"), prefix=r"\b", suffix=r"\b"), Name.Builtin),
             (words(("time",), prefix=r"\b", suffix=r"\b"), Keyword.Type),
