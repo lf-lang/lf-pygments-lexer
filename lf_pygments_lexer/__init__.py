@@ -74,6 +74,8 @@ class LFCLexer(DelegatingLexer):
     def __init__(self, **options):
         super().__init__(CLexer, LFLexer, **options)
 
+    def analyse_text(text):
+        return re.search(r"^\s*target\s*C\b", text, re.M) and 1.0
 
 class LFCppLexer(DelegatingLexer):
     name = "Lingua Franca with C++ target"
@@ -82,6 +84,9 @@ class LFCppLexer(DelegatingLexer):
 
     def __init__(self, **options):
         super().__init__(CppLexer, LFLexer, **options)
+
+    def analyse_text(text):
+        return re.search(r"^\s*target\s*Cpp\b", text, re.M) and 1.0
 
 
 class LFPythonLexer(DelegatingLexer):
@@ -92,6 +97,9 @@ class LFPythonLexer(DelegatingLexer):
     def __init__(self, **options):
         super().__init__(PythonLexer, LFLexer, **options)
 
+    def analyse_text(text):
+        return re.search(r"^\s*target\s*Python\b", text, re.M) and 1.0
+
 
 class LFRustLexer(DelegatingLexer):
     name = "Lingua Franca with Rust target"
@@ -101,6 +109,9 @@ class LFRustLexer(DelegatingLexer):
     def __init__(self, **options):
         super().__init__(RustLexer, LFLexer, **options)
 
+    def analyse_text(text):
+        return re.search(r"^\s*target\s*Rust\b", text, re.M) and 1.0
+
 
 class LFTypeScriptLexer(DelegatingLexer):
     name = "Lingua Franca with TypeScript target"
@@ -109,6 +120,9 @@ class LFTypeScriptLexer(DelegatingLexer):
 
     def __init__(self, **options):
         super().__init__(TypeScriptLexer, LFLexer, **options)
+
+    def analyse_text(text):
+        return re.search(r"^\s*target\s*TypeScript\b", text, re.M) and 1.0
 
 
 class LFLexer(RegexLexer):
@@ -128,7 +142,7 @@ class LFLexer(RegexLexer):
             (r"(?<!:):(?!:)", Punctuation),
             # custom rules
             (
-                r"(\btarget)(\s*)(C|Cpp|Python|Rust|TypeScript)",
+                r"(\btarget)(\s*)(C\b|Cpp|Python|Rust|TypeScript)",
                 bygroups(Keyword, Whitespace, Name.Builtin),
             ),
             (r"(\breactor)(\s*)(\w*)", bygroups(Keyword, Whitespace, Name.Class)),
