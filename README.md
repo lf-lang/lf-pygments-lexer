@@ -1,4 +1,4 @@
-This python package provides [pygments](https://pygments.org/) lexers for Lingua Franca and its various target dialects.
+This python package provides [pygments](https://pygments.org/) lexers for Lingua Franca and its various target dialects. This enables rendering highlighted  images and documents from LF code. An example document can be found [here](example/example.pdf).
 
 ## Overview
 
