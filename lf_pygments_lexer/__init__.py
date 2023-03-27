@@ -150,7 +150,7 @@ class LFLexer(RegexLexer):
             (r"(\boutput)([.*?])?(\s*)(\w*)", bygroups(Keyword, Other, Whitespace, Name.Variable)),
             (r"(\baction)(\s*)(\w*)", bygroups(Keyword, Whitespace, Name.Variable)),
             (r"(\bstate)(\s*)(\w*)", bygroups(Keyword, Whitespace, Name.Variable)),
-            (r"(\w*)(\s*)(=)(\s*)(new)", bygroups(Name.Variable, Whitespace, Operator, Keyword)),
+            (r"(\w*)(\s*)(=)(\s*)(new)", bygroups(Name.Variable, Whitespace, Operator, Whitespace, Keyword)),
             # keywords
             (words(keywords, prefix=r"\b", suffix=r"\b"), Keyword),
             # builtins
