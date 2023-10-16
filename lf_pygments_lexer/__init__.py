@@ -63,6 +63,8 @@ keywords = (
     "physical",
     "action",
     "federated",
+    "target",
+    "method",
 )
 
 
