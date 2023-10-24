@@ -153,6 +153,7 @@ class LFLexer(RegexLexer):
             (r"(\baction)(\s+)(\w+)", bygroups(Keyword, Whitespace, Name.Variable)),
             (r"(\bstate)(\s+)(\w+)", bygroups(Keyword, Whitespace, Name.Variable)),
             (r"(\btimer)(\s+)(\w+)", bygroups(Keyword, Whitespace, Name.Variable)),
+            (r"(\bmethod)(\s+)(\w+)", bygroups(Keyword, Whitespace, Name.Variable)),
             (r"(\w*)(\s*)(=)(\s*)(new)", bygroups(Name.Variable, Whitespace, Operator, Whitespace, Keyword)),
             (r"@\w+\b", Name.Decorator),
             # keywords
